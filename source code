@@ -1,0 +1,174 @@
+#include <iostream>
+#include<string>
+using namespace std;
+string ones(int n,string& s)
+{
+    switch(n%10)
+    {
+        case 0: return "Zero";
+        break;
+        case 1: return "One";
+        break;
+        case 2: return "Two";
+        break;
+        case 3: return "Three";
+        break;
+        case 4: return "Four";
+        break;
+        case 5: return "Five";
+        break;
+        case 6: return "Six";
+        break;
+        case 7: return "Seven";
+        break;
+        case 8: return "Eight";
+        break;
+        case 9: return "Nine";
+        break;
+        
+    }
+    return "";
+}
+string twos(int n,string& s)
+{
+    if(n>10 && n<20)
+    {
+    switch(n)
+    {
+        case 11: 
+        return "Eleven";
+        case 12:
+        return "Twelve";
+        case 13:
+        return "Thirteen";
+        case 14:
+        return "Fourteen";
+        case 15:
+        return "Fifteen";
+        case 16:
+        return "Sixteen";
+        case 17:
+        return "Seventeen";
+        case 18:
+        return "Eighteen";
+        case 19:
+        return "Nineteen";
+        default: return "";
+    }
+    }
+    else if(n%10==0)
+    {
+        int temp=n/10;
+        switch(temp)
+        {
+            case 1: return "Ten ";
+            case 2: return "Twenty ";
+            case 3: return "Thirty ";
+            case 4: return "Fourty ";
+            case 5: return "Fifty ";
+            case 6: return "Sixty ";
+            case 7: return "Seventy ";
+            case 8: return "Eighty ";
+            case 9: return "Ninety ";
+            default: return "";
+        }
+    }
+    else 
+    {
+        s+=(twos((n/10)*10,s)+ones(n%10,s));
+        return s;
+    }
+   // return s;
+}
+string threes(int n, string& s) {
+  if (n >= 100 && n < 200) {
+    return twos(n, s); // Use twos for numbers between 100 and 199
+  } else {
+    return ones(n / 100, s) + " hundred " + twos(n % 100, s);
+  }
+}
+string fours(int n,string& s)
+{
+    if(n%1000==0 && n/1000==1)
+    return "thousand";
+    else if(ones(((n%1000)/100),s)=="Zero")
+    return ones(n/1000,s)+" "+"thousand"+" "+ twos(n%100,s);
+    else
+    return ones(n/1000,s)+" "+"thousand"+" "+ones(((n%1000)/100),s)+" "+"hundred"+ twos(n%100,s);
+}
+string fives(int n,string& s)
+{
+   return twos(n/1000,s)+" "+"thousand"+" "+threes(n%1000,s);
+}
+string sixes(int n,string& s)
+{
+   
+  string thousands = twos(((n % 100000) / 1000), s); // Calculate thousands place
+  if (thousands.empty()) {
+    thousands = "Zero"; // Replace empty string with "Zero" for leading zero
+  }
+  return ones(n / 100000, s) + " lakh " + thousands + " thousand " + threes(n % 1000, s);
+
+}
+
+
+int main()
+{
+    string s=" ";
+    int n,num;
+    cin>>n;
+    num=n;
+    int rem=0,count=0,i;
+    while(num!=0)
+    {
+        num=num/10;
+        count++;
+    }
+    switch(count)
+    {
+        case 1: 
+        if(n>0)
+        s=ones(n,s);
+        else
+        s=ones(n*(-1),s);
+        break;
+        case 2:
+       if(n>0)
+        s=twos(n,s);
+        else
+        s=twos(n*(-1),s);
+        break;
+        case 3:
+       if(n>0)
+        s=threes(n,s);
+        else
+        s=threes(n*(-1),s);
+        break;
+        case 4:
+       if(n>0)
+        s=fours(n,s);
+        else
+        s=fours(n*(-1),s);
+        break;
+        case 5:
+       if(n>0)
+        s=fives(n,s);
+        else
+        s=fives(n*(-1),s);
+        break;
+        case 6:
+       if(n>0)
+        s=sixes(n,s);
+        else
+        s=sixes(n*(-1),s);
+        break;
+    }
+    if(n>0)
+    cout<<s;
+    else
+    {
+    cout<<"Minus "<<s;
+    }
+
+return 0;
+}
